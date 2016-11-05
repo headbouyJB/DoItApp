@@ -14,17 +14,19 @@ class CreateTaskViewController: UIViewController {
     
     @IBOutlet weak var importantSwitch: UISwitch!
     
-    var previousVC = TasksViewController()
     
-    @IBAction func addTapped(_ sender: Any?) {
+    @IBAction func addTapped(_ sender: Any) {
         //Create Task from outlet information
-        let task = Task()
+        
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
+        let task = Task(context: context)
         task.name = taskNameText.text!
         task.important = importantSwitch.isOn
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
         
-        //Add new task in array in ViewController
-        previousVC.tasks.append(task)
-        previousVC.taskTable.reloadData()
+        // save and pop back
+       
         navigationController!.popViewController(animated: true)
         
     }
